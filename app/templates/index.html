@@ -1,0 +1,57 @@
+<html ng-app="bumpapp">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="/static/core.js"></script>
+
+    <title>Bump Util</title>
+    <style>
+            .todo-holder {margin-top:40px;}
+            body {margin-top:30px;}
+            
+        </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
+  </head>
+
+  <body ng-controller="mainController">
+	  <div class="container">
+	    <div class="jumbotron text-center">
+	            <h1>Bump Explore</h1>
+	            
+	    </div>
+<div class="alert alert-info alert-dismissible" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <strong>Remember</strong> Still in beta! 
+</div>
+	    <div class="col-sm-4 text-center">
+		</div>
+		<div class="col-sm-2 text-center">
+		    	<select ng-model="playerOne"
+                	ng-options="bumper as bumper for bumper in bumpers">
+            	</select>
+		</div>
+		<div class="col-sm-2 text-center">
+				<select ng-model="playerTwo"
+                	ng-options="bumper as bumper for bumper in bumpers">
+            	</select>
+		</div>
+		<div class="col-sm-4 text-center">
+		<button type="submit" class="btn-success btn btn-lg" ng-click="getComparison()" style="margin-bottom:10px;">Go</button>
+		</div>
+		
+		<table class="table table-hover table-bordered" stlye="margin-top:100px;">
+		<tr>
+		<td><b>Date</b></td>
+		<td><b>Win</b></td>
+		</tr>
+			<tr ng-repeat="item in both" ng-class="{success: item[1]==1}">
+    			<td ng-repeat="actual in item">{{actual|angular}}</td>
+  			</tr>
+		</table>
+		</div>
+
+  </body>
+</html>
