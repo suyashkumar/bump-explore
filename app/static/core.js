@@ -112,24 +112,24 @@ function mainController($scope, $http){
 				console.log("Now")
 				console.log($scope.wins);
 
-				makeGraph([{"label":"Wins","value":mySum},{"label":"Losses","value":totalGames-mySum}]);
-
+				makePie([{"label":"Wins","value":mySum},{"label":"Losses","value":totalGames-mySum}]);
 			});
 
 	}
-	var makeGraph=function(data){
+	// Make Pie Chart of Data
+	var makePie=function(data){
 		nv.addGraph(function() {
-  var chart = nv.models.pieChart()
-      .x(function(d) { return d.label })
-      .y(function(d) { return d.value })
-      .showLabels(true);
-    d3.select("#chart svg")
-        .datum(data)
-      .transition().duration(1200)
-        .call(chart);
+		  var chart = nv.models.pieChart()
+		      .x(function(d) { return d.label })
+		      .y(function(d) { return d.value })
+		      .showLabels(true);
+		    d3.select("#chart svg")
+		        .datum(data)
+		      .transition().duration(1200)
+		        .call(chart);
 
-  return chart;
-});
+		  return chart;
+		});
 	}
 
 }
