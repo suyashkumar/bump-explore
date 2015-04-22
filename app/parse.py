@@ -65,7 +65,7 @@ def saveJSON(playerData):
 
 
 if __name__ == '__main__':
-    playerData=parse('master.csv')
+    playerData=parse('static/master.csv')
     print playerData['Rachel']['games']
     saveJSON(playerData)
 

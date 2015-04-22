@@ -18,6 +18,7 @@
 
             body {margin-top:30px;}
             #chart {height:300px; width:400px;}
+            #lineGraph {height:300px;width:350px;}
             
         </style>
     <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
@@ -68,7 +69,7 @@
 
 		<!--Table-->
 		<div class="row">
-			<div class="col-sm-4 text-center">
+			<div class="col-sm-3 text-center">
 				Pairwise ledger:
 				<table class="record-table table table-hover table-bordered">
 				<tr>
@@ -83,10 +84,17 @@
 
 		<script src="http://d3js.org/d3.v3.js"></script>
 
-<div id="chart" class="col-sm-8 text-center">
-  <svg></svg>
-</div>
-</div>
+		<div id="chart" class="col-sm-4 text-center">
+		  <svg></svg>
+		</div>
+
+		<div id="lineGraph" class="col-sm-5 text-center">
+		<div style="position:relative">
+			<svg></svg>
+		</div>
+		</div>
+
+		</div>
 
 
   </body>
