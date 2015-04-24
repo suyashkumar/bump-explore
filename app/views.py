@@ -31,4 +31,5 @@ def compare(p1,p2):
 	playerData=parse(os.path.join(APP_ROOT,'static/master.csv'))
 	returnDict=playerCompare(p1.title(),p2.title(),playerData)
 	print returnDict
+	print p2.title()
 	return Response(json.dumps(returnDict),  mimetype='application/json')

@@ -31,6 +31,6 @@ def playerCompare(playerOne, playerTwo, playerData):
 
 
 if __name__ == '__main__':
-    playerData=parse('master.csv')
-    print playerCompare('Tyler','Suyash',playerData)
+    playerData=parse('static/master.csv')
+    print playerCompare('Jeremy','PapaBear',playerData)
 

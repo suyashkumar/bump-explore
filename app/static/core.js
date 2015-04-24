@@ -26,6 +26,7 @@ function mainController($scope, $http){
 	$scope.getComparison=function(){
 		$http.get('api/compare/'+$scope.playerOne+'/'+$scope.playerTwo).success(
 			function(data){
+				console.log("This is data");
 				console.log(data);
 				$scope.both=[];
 				var mySum=0;
@@ -40,6 +41,8 @@ function mainController($scope, $http){
 					datePlot[i]=Date.parse(data['date'][i]);
 
 				}
+				$scope.playerWins=mySum;
+				$scope.playerLosses=data['win'].length-mySum;
 				// Bin items in datePlot
 				var currentWeek=datePlot[0];
 				var currentWins=0;
@@ -71,8 +74,7 @@ function mainController($scope, $http){
 				console.log("Plot data");
 				console.log(lineGraphData[0]);
 				var totalGames=data['win'].length;
-				$scope.playerWins=mySum;
-				$scope.playerLosses=data['win'].length-mySum;
+				
 
 				makePie([{"label":"Wins","value":mySum},{"label":"Losses","value":totalGames-mySum}]);
 				makeLineGraph(lineGraphData);
