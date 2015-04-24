@@ -29,7 +29,7 @@ def compare(p1,p2):
 	APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 	
 	playerData=parse(os.path.join(APP_ROOT,'static/master.csv'))
-	returnDict=playerCompare(p1.title(),p2.title(),playerData)
+	returnDict=playerCompare(p1.strip(),p2.strip(),playerData)
+	print p2
 	print returnDict
-	print p2.title()
 	return Response(json.dumps(returnDict),  mimetype='application/json')
