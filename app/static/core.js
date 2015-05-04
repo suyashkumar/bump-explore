@@ -59,8 +59,8 @@ function mainController($scope, $http){
 						lineGraphData[0]['values'].push([currentWeek,currentWins]);
 						lineGraphData[1]['values'].push([currentWeek,currentTotalGames]);
 						currentWeek=currentWeek+604800000; 
-						currentWins=0;
-						currentTotalGames=0;
+						currentWins=data['win'][i];
+						currentTotalGames=1;
 					}
 					// check if last iteration and add remaining data if not added yet
 					if(i==datePlot.length-1 && currentDate<=currentWeek+604800000){
@@ -70,9 +70,9 @@ function mainController($scope, $http){
 
 				}
 
-
 				console.log("Plot data");
 				console.log(lineGraphData[0]);
+				console.log(lineGraphData[1]);
 				var totalGames=data['win'].length;
 				
 
