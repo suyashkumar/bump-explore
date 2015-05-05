@@ -4,6 +4,6 @@ A Flask server with an Angular frontend that allows players to quickly compare t
 
 **Requirements**
 * Flask
-* Triangle 
+
 
 ![](/images/bumpexplore.gif)
