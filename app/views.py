@@ -11,7 +11,7 @@ Serve up the index page
 @app.route('/')
 @app.route('/index')
 def index():
-	return render_template('index.html')
+	return app.send_static_file('index.html')
 '''
 Get List of Bumpers, sorted alphabetically
 '''
