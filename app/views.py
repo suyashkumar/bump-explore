@@ -24,7 +24,7 @@ def bumpers():
 	playerData=parse(os.path.join(APP_ROOT,'static/master.csv'))
 	bump=playerData.keys()
 	bump.sort()
-	print bump
+	#print bump
 	return Response(json.dumps(bump),  mimetype='application/json')
 
 @app.route('/api/compare/<p1>/<p2>',methods=['GET'])
@@ -33,6 +33,6 @@ def compare(p1,p2):
 	
 	playerData=parse(os.path.join(APP_ROOT,'static/master.csv'))
 	returnDict=playerCompare(p1.strip(),p2.strip(),playerData)
-	print p2
-	print returnDict
+	#print p2
+	#print returnDict
 	return Response(json.dumps(returnDict),  mimetype='application/json')
