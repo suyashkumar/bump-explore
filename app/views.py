@@ -12,6 +12,9 @@ Serve up the index page
 @app.route('/index')
 def index():
 	return app.send_static_file('index.html')
+@app.route('/index-alt')
+def index_alt():
+	return app.send_static_file('index-alt.html')
 '''
 Get List of Bumpers, sorted alphabetically
 '''

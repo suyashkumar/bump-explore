@@ -25,8 +25,7 @@ function mainController($scope, $http){
 	}
 	$scope.getComparison=function(){
 		$http.get('api/compare/'+$scope.playerOne+'/'+$scope.playerTwo).success(
-			function(data){	
-				
+			function(data){		
 				var dataReformat=[];
 				var myWins=0;
 				var datePlot=[];
@@ -45,15 +44,18 @@ function mainController($scope, $http){
 				$scope.dataReformat=dataReformat; 
 				$scope.playerWins=myWins;
 				$scope.playerLosses=numGames-myWins;
+
+
 				// Bin items in datePlot
 				var currentWeek=datePlot[0];
 				var currentWeekWins=0;
 				var currentTotalGames=0;
 				var lineGraphData=[{"key":"Wins","values":[]},{"key":"Total Week Games","values":[]}];
-				// Iterate though all the games and bin by week.
+				// Iterate though all the games and bin by week. Store data in plotting form
+				// in lineGraphData defined above.
 				for(i=0;i<numGames;i++){
 					var currentDate=datePlot[i];
-					if (currentDate<=currentWeek+604800000){
+					if (currentDate<=currentWeek+604800000){ // There are 604800000ms in a week
 						// Add this game's win/loss to currentWeekWins
 						currentWeekWins+=data['win'][i];
 						currentTotalGames+=1;
