@@ -1,20 +1,21 @@
+/*
+core.js
+@author Suyash Kumar (suyashkumar)
+
+Angular front-end application core and controller. Communicates with server
+to get and process relevant data, then populates data in front-end
+view as required. Acts upon frontend interactions as necessary. 
+*/
 var bumpapp=angular.module('bumpapp',[]);
 
 
+
 function mainController($scope, $http){
-
-	$http.get('/api/bumpers').success(
-				function(data){ //data is json data response
-				$scope.bumpers=data;
-				//console.log(data);
-
-			});
-
-	$scope.playerWins="-";
-	$scope.playerLosses="-";
-
-	$scope.getBumpers=function(){
-		console.log("Called");
+	/*
+	Gets list of bumper pool players from server, passes the JSON
+	data to the bumpers variable to populate drop-down selection lists. 
+	*/
+	var getBumpers=function(){
 		$http.get('/api/bumpers').success(
 			function(data){ //data is json data response
 			$scope.bumpers=data;
@@ -23,6 +24,20 @@ function mainController($scope, $http){
 		});
 
 	}
+
+	getBumpers(); // Update Bumper Lists in drop downs
+	// Set win/loss placeholders
+	$scope.playerWins="-"; 
+	$scope.playerLosses="-";
+
+	/*
+	$scope.getComparison() 
+	Called when the "Go" button is pressed in the app. Gets the 
+	player selections from the application (playerOne and playerTwo), 
+	and passes them to server to retrieve a comparison. Server returns 
+	win/loss record of all games played and dates of all games played. 
+	Data then manipulated and plotted. 
+	*/
 	$scope.getComparison=function(){
 		$http.get('api/compare/'+$scope.playerOne+'/'+$scope.playerTwo).success(
 			function(data){		
@@ -45,45 +60,52 @@ function mainController($scope, $http){
 				$scope.playerWins=myWins;
 				$scope.playerLosses=numGames-myWins;
 
-
-				// Bin items in datePlot
-				var currentWeek=datePlot[0];
-				var currentWeekWins=0;
-				var currentTotalGames=0;
-				var lineGraphData=[{"key":"Wins","values":[]},{"key":"Total Week Games","values":[]}];
-				// Iterate though all the games and bin by week. Store data in plotting form
-				// in lineGraphData defined above.
-				for(i=0;i<numGames;i++){
-					var currentDate=datePlot[i];
-					if (currentDate<=currentWeek+604800000){ // There are 604800000ms in a week
-						// Add this game's win/loss to currentWeekWins
-						currentWeekWins+=data['win'][i];
-						currentTotalGames+=1;
-					}
-					else{
-						lineGraphData[0]['values'].push([currentWeek,currentWeekWins]);
-						lineGraphData[1]['values'].push([currentWeek,currentTotalGames]);
-						currentWeek=currentWeek+604800000; 
-						currentWeekWins=data['win'][i];
-						currentTotalGames=1;
-					}
-					// check if last iteration and add remaining data if not added yet
-					if(i==datePlot.length-1 && currentDate<=currentWeek+604800000){
-						lineGraphData[0]['values'].push([currentWeek,currentWeekWins]);
-						lineGraphData[1]['values'].push([currentWeek,currentTotalGames]);
-					}
-
-					
-				}			
-				
-
-
-				makePie([{"label":"Wins","value":myWins},{"label":"Losses","value":numGames-myWins}]);
-				makeLineGraph(lineGraphData);
+				makePie([{"label":"Wins","value":myWins},{"label":"Losses","value":numGames-myWins}]); // Make Pie Chart
+				lineGraphData=processLineGraph(data,datePlot,numGames); // Generate line graph data (games played, games won)
+				makeLineGraph(lineGraphData); // Make line graph
 			});
 
 	}
-	// Make Pie Chart of Data
+	/*
+	Processes win/loss record and list of dates for plotting. Currently bins by week. 	
+	*/
+	var processLineGraph=function(data,datePlot,numGames){
+
+		// Bin items in datePlot
+		var currentWeek=datePlot[0];
+		var currentWeekWins=0;
+		var currentTotalGames=0;
+		var lineGraphData=[{"key":"Wins","values":[]},{"key":"Total Week Games","values":[]}];
+		// Iterate though all the games and bin by week. Store data in plotting form
+		// in lineGraphData defined above.
+		for(i=0;i<numGames;i++){
+			var currentDate=datePlot[i];
+			if (currentDate<=currentWeek+604800000){ // There are 604800000ms in a week
+				// Add this game's win/loss to currentWeekWins
+				currentWeekWins+=data['win'][i];
+				currentTotalGames+=1;
+			}
+			else{
+				lineGraphData[0]['values'].push([currentWeek,currentWeekWins]);
+				lineGraphData[1]['values'].push([currentWeek,currentTotalGames]);
+				currentWeek=currentWeek+604800000; 
+				currentWeekWins=data['win'][i];
+				currentTotalGames=1;
+			}
+			// check if last iteration and add remaining data if not added yet
+			if(i==datePlot.length-1 && currentDate<=currentWeek+604800000){
+				lineGraphData[0]['values'].push([currentWeek,currentWeekWins]);
+				lineGraphData[1]['values'].push([currentWeek,currentTotalGames]);
+			}
+
+				
+		}	
+		return lineGraphData; 
+
+
+	}
+
+	// Makes an nvd3 pie chart of input win/loss data. 	
 	var makePie=function(data){
 		nv.addGraph(function() {
 		  var chart = nv.models.pieChart()
@@ -98,6 +120,9 @@ function mainController($scope, $http){
 		  return chart;
 		});
 	}
+	/*
+	Makes an nvd3 line graph of input data. 
+	*/
 	var makeLineGraph=function(data){
 		nv.addGraph(function() {
 		      var chart = nv.models.lineChart()
@@ -111,15 +136,14 @@ function mainController($scope, $http){
                 .y(function(d) {return d[1]})
 		                  ;
 
-		     chart.xAxis
-		        //.tickValues([1078030800000,1122782400000,1167541200000,1251691200000])
+		     chart.xAxis 
 		        .tickFormat(function(d) {
 		            return d3.time.format('%x')(new Date(d))
 		          }).axisLabel('Week');
 
-		    chart.yAxis     //Chart y-axis settings
-      .axisLabel('Games')
-      .tickFormat(d3.format('.02f'));
+			chart.yAxis     //Chart y-axis settings
+			.axisLabel('Games')
+			.tickFormat(d3.format('.02f'));
 
 		    d3.select('#lineGraph svg')
 		        .datum(data)
