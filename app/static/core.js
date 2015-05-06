@@ -25,58 +25,58 @@ function mainController($scope, $http){
 	}
 	$scope.getComparison=function(){
 		$http.get('api/compare/'+$scope.playerOne+'/'+$scope.playerTwo).success(
-			function(data){
-				console.log("This is data");
-				console.log(data);
-				$scope.both=[];
-				var mySum=0;
+			function(data){	
+				
+				var dataReformat=[];
+				var myWins=0;
 				var datePlot=[];
-				for(i=0;i<data['win'].length;i++){
+				var numGames=data['win'].length;
+				for(i=0;i<numGames;i++){
 					// Store win and date in "both" array. Easier for front end vis.
 					// Each element is an array represents one game. The first element is 
 					// date, second is win status. 
-					$scope.both[i]=[data['date'][i], data['win'][i]];
+					dataReformat[i]=[data['date'][i], data['win'][i]];
 					// Keep track of wins
-					mySum+=data['win'][i];
+					myWins+=data['win'][i];
 					datePlot[i]=Date.parse(data['date'][i]);
 
 				}
-				$scope.playerWins=mySum;
-				$scope.playerLosses=data['win'].length-mySum;
+				dataReformat.reverse();		
+				$scope.dataReformat=dataReformat; 
+				$scope.playerWins=myWins;
+				$scope.playerLosses=numGames-myWins;
 				// Bin items in datePlot
 				var currentWeek=datePlot[0];
-				var currentWins=0;
+				var currentWeekWins=0;
 				var currentTotalGames=0;
 				var lineGraphData=[{"key":"Wins","values":[]},{"key":"Total Week Games","values":[]}];
-				for(i=0;i<datePlot.length;i++){
+				// Iterate though all the games and bin by week.
+				for(i=0;i<numGames;i++){
 					var currentDate=datePlot[i];
 					if (currentDate<=currentWeek+604800000){
-						// Add this game's win/loss to currentWins
-						currentWins+=data['win'][i];
+						// Add this game's win/loss to currentWeekWins
+						currentWeekWins+=data['win'][i];
 						currentTotalGames+=1;
 					}
 					else{
-						lineGraphData[0]['values'].push([currentWeek,currentWins]);
+						lineGraphData[0]['values'].push([currentWeek,currentWeekWins]);
 						lineGraphData[1]['values'].push([currentWeek,currentTotalGames]);
 						currentWeek=currentWeek+604800000; 
-						currentWins=data['win'][i];
+						currentWeekWins=data['win'][i];
 						currentTotalGames=1;
 					}
 					// check if last iteration and add remaining data if not added yet
 					if(i==datePlot.length-1 && currentDate<=currentWeek+604800000){
-						lineGraphData[0]['values'].push([currentWeek,currentWins]);
+						lineGraphData[0]['values'].push([currentWeek,currentWeekWins]);
 						lineGraphData[1]['values'].push([currentWeek,currentTotalGames]);
 					}
 
-				}
-
-				console.log("Plot data");
-				console.log(lineGraphData[0]);
-				console.log(lineGraphData[1]);
-				var totalGames=data['win'].length;
+					
+				}			
 				
 
-				makePie([{"label":"Wins","value":mySum},{"label":"Losses","value":totalGames-mySum}]);
+
+				makePie([{"label":"Wins","value":myWins},{"label":"Losses","value":numGames-myWins}]);
 				makeLineGraph(lineGraphData);
 			});
 
@@ -127,6 +127,7 @@ function mainController($scope, $http){
 		     nv.utils.windowResize(function() { chart.update() });
 
 		    return chart;
+		    
   		});
 
 	}
