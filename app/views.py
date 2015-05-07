@@ -2,8 +2,7 @@ from flask import *
 from app import app
 from flask import Response
 import json
-from parse import *
-from bump_util import *
+from bump_util.analyze import *
 import os
 '''
 Serve up the index page

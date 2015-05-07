@@ -1,0 +1,3 @@
+[submodule "app/bump_util"]
+	path = app/bump_util
+	url = https://github.com/suyashkumar/bump_util.git

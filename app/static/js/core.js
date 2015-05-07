@@ -122,7 +122,7 @@ function mainController($scope, $http){
 		    d3.select("#chart svg")
 		        .datum(data)
 		      .transition().duration(1200)
-		        .call(chart);
+		        .call(chart);	
 
 		  return chart;
 		});
