@@ -61,10 +61,10 @@ function mainController($scope, $http){
 				$scope.playerLosses=numGames-myWins;
 				
 				var $pie = $('#pieTitle');
-				$pie.append('Games Won/Lost');
+				$pie.text('Games Won/Lost');
 				
 				var $line = $('#lineTitle');
-				$line.append('Games Played and Games Won');
+				$line.text('Games Played and Games Won');
 				
 
 				makePie([{"label":"Wins","value":myWins},{"label":"Losses","value":numGames-myWins}]); // Make Pie Chart
