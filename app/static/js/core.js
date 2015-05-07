@@ -59,11 +59,18 @@ function mainController($scope, $http){
 				$scope.dataReformat=dataReformat; 
 				$scope.playerWins=myWins;
 				$scope.playerLosses=numGames-myWins;
+				
+				var $pie = $('#pieTitle');
+				$pie.append('Games Won/Lost');
+				
+				var $line = $('#lineTitle');
+				$line.append('Games Played and Games Won');
+				
 
 				makePie([{"label":"Wins","value":myWins},{"label":"Losses","value":numGames-myWins}]); // Make Pie Chart
 				lineGraphData=processLineGraph(data,datePlot,numGames); // Generate line graph data (games played, games won)
 				makeLineGraph(lineGraphData); // Make line graph
-			});
+				});
 
 	}
 	/*
