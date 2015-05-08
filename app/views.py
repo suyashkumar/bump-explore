@@ -3,6 +3,7 @@ from app import app
 from flask import Response
 import json
 from bump_util.analyze import *
+from bump_util.analyze.elo_util import *
 import os
 '''
 Serve up the index page
@@ -10,10 +11,10 @@ Serve up the index page
 @app.route('/')
 @app.route('/index')
 def index():
-	return app.send_static_file('index.html')
+	return app.send_static_file('index-alt.html')
 @app.route('/index-alt')
 def index_alt():
-	return app.send_static_file('index-alt.html')
+	return app.send_static_file('index.html')
 '''
 Get List of Bumpers, sorted alphabetically
 '''
@@ -32,6 +33,14 @@ def compare(p1,p2):
 	
 	playerData=parse(os.path.join(APP_ROOT,'static/master.csv'))
 	returnDict=playerCompare(p1.strip(),p2.strip(),playerData)
-	#print p2
-	#print returnDict
+	# Add Elo data to return dict
+	playerElos=calculateElo(os.path.join(APP_ROOT,'static/master.csv'))
+		
+	returnDict['p1EloHistory']=getFullEloHistory(playerElos,p1)
+	returnDict['p2EloHistory']=getFullEloHistory(playerElos,p2)
+
 	return Response(json.dumps(returnDict),  mimetype='application/json')
+
+
+
+	

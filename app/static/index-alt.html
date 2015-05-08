@@ -18,7 +18,8 @@
             body {margin-top:30px;}
             #chart {height:300px; width:400px;}
             #lineGraph {height:300px;width:400px;}
-           #header {margin-top:70px}; 
+           #header {margin-top:70px};
+		#elo {height:500px;width:200px;} 
         </style>
     <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
   </head>
@@ -53,7 +54,8 @@
 		</div>
 		<div class="alert alert-info alert-dismissible" role="alert" id="beta">
 		  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		  <strong>Remember</strong> Still in beta! 
+		  <strong>Remember</strong> Still in beta! Here are some good sample comparisons: <a href="#" ng-click="sampleComparison('Will','Shaunak')">Will v. Shaunak</a> or <a href="#" ng-click="sampleComparison('Tyler','Kaighn')">Tyler v. Kaighn</a> 
+
 		</div>
 		<div class="row">
 		    <div class="col-sm-4 text-center">
@@ -90,6 +92,7 @@
 
 		<!--Table-->
 		<div class="row">
+			
 			<div class="col-sm-3 text-center">
 				Pairwise ledger:
 				<table class="record-table table table-hover table-bordered">
@@ -104,19 +107,34 @@
 			</div>
 
 		<script src="http://d3js.org/d3.v3.js"></script>
+			<div class="col-sm-9">
+				<!--Nested Columns, two graphs-->
+				<div id="chart" class="col-sm-4 well text-center" style="margin-right: 10px">
+					<div id="pieTitle" class="text-center"> </div>
+		  			<svg></svg>
+				</div>
 
-		<div id="chart" class="col-sm-4 well text-center">
-		<div id="pieTitle" class="text-center"> </div>
-		  <svg></svg>
-		</div>
+				<div id="lineGraph" class="col-sm-5 well text-center" >
+					<div id="lineTitle" class="text-center"> </div>
+					<div style="position:relative">
 
-		<div id="lineGraph" class="col-sm-5 well text-center" style="margin-left:10px">
-		<div id="lineTitle" class="text-center"> </div>
-		<div style="position:relative">
-
-			<svg></svg>
+						<svg></svg>
+				</div>
+				</div>
+				<!--Another Row-->
+				<div id="elo" class="col-sm-11 text-center well" style="width:810px;" >
+					<div id="eloTitle" class="text-center"></div>
+					<div style="position:relative">
+					<svg></svg>
+					</div>
+				</div>
+			</div>
+		
+					
+	
+		
 		</div>
-		</div>
+			
 
 		</div>
 

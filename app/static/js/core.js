@@ -40,7 +40,8 @@ function mainController($scope, $http){
 	*/
 	$scope.getComparison=function(){
 		$http.get('api/compare/'+$scope.playerOne+'/'+$scope.playerTwo).success(
-			function(data){		
+			function(data){
+				
 				var dataReformat=[];
 				var myWins=0;
 				var datePlot=[];
@@ -66,11 +67,16 @@ function mainController($scope, $http){
 				var $line = $('#lineTitle');
 				$line.text('Games Played and Games Won');
 				
-
+				var $elo =$('#eloTitle');
+				$elo.text('Elo Over Time');
 				makePie([{"label":"Wins","value":myWins},{"label":"Losses","value":numGames-myWins}]); // Make Pie Chart
 				lineGraphData=processLineGraph(data,datePlot,numGames); // Generate line graph data (games played, games won)
 				makeLineGraph(lineGraphData); // Make line graph
+				var eloGraphData=[{"key":$scope.playerOne,"values":data['p1EloHistory']},{"key":$scope.playerTwo,"values":data['p2EloHistory']}]
+				makeEloLineGraph(eloGraphData);
+
 				});
+							
 
 	}
 	/*
@@ -111,6 +117,45 @@ function mainController($scope, $http){
 
 
 	}
+	var makeEloLineGraph=function(data){
+		nv.addGraph(function() {
+		      var chart = nv.models.lineChart()
+                .margin({left: 100})  //Adjust chart margins to give the x-axis some breathing room.
+                .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
+                .transitionDuration(350)  //how fast do you want the lines to transition?
+                .showLegend(true)       //Show the legend, allowing users to turn on/off line series.
+                .showYAxis(true)        //Show the y-axis
+                .showXAxis(true)        //Show the x-axis
+                .x(function(d){return d[0]})
+                .y(function(d) {return d[1]})
+		.width(780)
+		.height(300)
+		                  ;
+
+		     chart.xAxis 
+		        .tickFormat(function(d) {	
+		            return d3.time.format('%x')(new Date(d))
+		          }).axisLabel('Day');
+
+			chart.yAxis     //Chart y-axis settings
+			.axisLabel('Elo')
+			.tickFormat(d3.format('.02f'));
+
+		    d3.select('#elo svg')
+		        .datum(data)
+		        .call(chart);
+		d3.select('#elo svg').datum(data).transition().duration(500).call(chart).style({ 'width': 780, 'height': 300 });
+
+		    //TODO: Figure out a good way to do this automatically
+		     nv.utils.windowResize(function() { chart.update() });
+
+		    return chart;
+		    
+  		});
+
+
+	}
+
 
 	// Makes an nvd3 pie chart of input win/loss data. 	
 	var makePie=function(data){
@@ -141,6 +186,8 @@ function mainController($scope, $http){
                 .showXAxis(true)        //Show the x-axis
                 .x(function(d){return d[0]})
                 .y(function(d) {return d[1]})
+		
+	
 		                  ;
 
 		     chart.xAxis 
@@ -159,9 +206,20 @@ function mainController($scope, $http){
 		    //TODO: Figure out a good way to do this automatically
 		     nv.utils.windowResize(function() { chart.update() });
 
+
 		    return chart;
 		    
   		});
+
+	}
+	$scope.sampleComparison=function(p1,p2) {
+		$scope.playerOne=p1;
+		$scope.playerTwo=p2;
+		$scope.getComparison();
+		
+
+
+
 
 	}
 
