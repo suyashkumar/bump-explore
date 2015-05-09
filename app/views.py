@@ -12,6 +12,13 @@ Serve up the index page
 @app.route('/index')
 def index():
 	return app.send_static_file('index-alt.html')
+
+# Set max-age for cached files in response headers. 
+@app.after_request
+def add_header(response):
+    response.cache_control.max_age = 300 # 300 seconds max-age of page cache
+    return response
+
 @app.route('/index-alt')
 def index_alt():
 	return app.send_static_file('index.html')
