@@ -69,7 +69,7 @@ function mainController($scope, $http){
 				
 				var $elo =$('#eloTitle');
 				$elo.text('Elo Over Time');
-				makePie([{"label":"Wins","value":myWins},{"label":"Losses","value":numGames-myWins}]); // Make Pie Chart
+				makePie([{"label":"Wins","value":myWins/numGames},{"label":"Losses","value":(numGames-myWins)/numGames}]); // Make Pie Chart
 				lineGraphData=processLineGraph(data,datePlot,numGames); // Generate line graph data (games played, games won)
 				makeLineGraph(lineGraphData); // Make line graph
 				var eloGraphData=[{"key":$scope.playerOne,"values":data['p1EloHistory']},{"key":$scope.playerTwo,"values":data['p2EloHistory']}]
