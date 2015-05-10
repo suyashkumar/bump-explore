@@ -43,8 +43,8 @@ def compare(p1,p2):
 	# Add Elo data to return dict
 	playerElos=calculateElo(os.path.join(APP_ROOT,'static/master.csv'))
 		
-	returnDict['p1EloHistory']=getFullEloHistory(playerElos,p1)
-	returnDict['p2EloHistory']=getFullEloHistory(playerElos,p2)
+	returnDict['p1EloHistory']=getFullEloHistory(playerElos,p1.strip())
+	returnDict['p2EloHistory']=getFullEloHistory(playerElos,p2.strip())
 
 	return Response(json.dumps(returnDict),  mimetype='application/json')
 
