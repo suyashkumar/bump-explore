@@ -196,12 +196,12 @@ function mainController($scope, $http){
                 .showXAxis(true)        //Show the x-axis
                 .x(function(d){return d[0]})
                 .y(function(d) {return d[1]})
-				.width(500)
-				.height(300)
+				//.width(400)
+				//.height(300)
 		
 	
 		                  ;
-						  d3.select('#elo svg').datum(data).transition().duration(500).call(chart).style({ 'width': 780, 'height': 300 });
+				//		  d3.select('#elo svg').datum(data).transition().duration(500).call(chart).style({ 'width': 400, 'height': 300 });
 
 
 		     chart.xAxis 
