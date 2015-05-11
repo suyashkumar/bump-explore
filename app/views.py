@@ -40,12 +40,19 @@ def compare(p1,p2):
 	
 	playerData=parse(os.path.join(APP_ROOT,'static/master.csv'))
 	returnDict=playerCompare(p1.strip(),p2.strip(),playerData)
+	print returnDict
 	# Add Elo data to return dict
-	playerElos=calculateElo(os.path.join(APP_ROOT,'static/master.csv'))
-		
-	returnDict['p1EloHistory']=getFullEloHistory(playerElos,p1.strip())
-	returnDict['p2EloHistory']=getFullEloHistory(playerElos,p2.strip())
+	try:
+		playerElos=calculateElo(os.path.join(APP_ROOT,'static/master.csv'))
+				
+		returnDict['p1EloHistory']=getFullEloHistory(playerElos,p1.strip())
+		returnDict['p2EloHistory']=getFullEloHistory(playerElos,p2.strip())
+	except KeyError:
+		print "Player likely not ranked"
+		returnDict['p1EloHistory']=[]
+		returnDict['p2EloHistory']=[]
 
+			
 	return Response(json.dumps(returnDict),  mimetype='application/json')
 
 

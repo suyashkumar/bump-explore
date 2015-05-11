@@ -41,7 +41,8 @@ function mainController($scope, $http){
 	$scope.getComparison=function(){
 		$http.get('api/compare/'+$scope.playerOne+'/'+$scope.playerTwo).success(
 			function(data){
-				
+				console.log('Data');
+				console.log(data);	
 				var dataReformat=[];
 				var myWins=0;
 				var datePlot=[];
@@ -54,8 +55,11 @@ function mainController($scope, $http){
 					// Keep track of wins
 					myWins+=data['win'][i];
 					datePlot[i]=Date.parse(data['date'][i]);
+					console.log(data['date'][i]);
 
 				}
+				console.log('dateplot:');
+				console.log(datePlot.length);
 				dataReformat.reverse();		
 				$scope.dataReformat=dataReformat; 
 				$scope.playerWins=myWins;
@@ -71,6 +75,7 @@ function mainController($scope, $http){
 				$elo.text('Elo Over Time');
 				makePie([{"label":"Wins","value":myWins/numGames},{"label":"Losses","value":(numGames-myWins)/numGames}]); // Make Pie Chart
 				lineGraphData=processLineGraph(data,datePlot,numGames); // Generate line graph data (games played, games won)
+			
 				makeLineGraph(lineGraphData); // Make line graph
 				var eloGraphData=[{"key":$scope.playerOne,"values":data['p1EloHistory']},{"key":$scope.playerTwo,"values":data['p2EloHistory']}]
 				makeEloLineGraph(eloGraphData);
@@ -110,9 +115,14 @@ function mainController($scope, $http){
 				lineGraphData[0]['values'].push([currentWeek,currentWeekWins]);
 				lineGraphData[1]['values'].push([currentWeek,currentTotalGames]);
 			}
-
+		var currD=new Date(0);
+		currD.setUTCSeconds(currentDate);
+		console.log('current date ', currD);
+		currD.setUTCSeconds(currentWeek);
+		console.log('current week ',currD);
 				
-		}	
+		}
+		console.log(lineGraphData);
 		return lineGraphData; 
 
 
@@ -186,9 +196,13 @@ function mainController($scope, $http){
                 .showXAxis(true)        //Show the x-axis
                 .x(function(d){return d[0]})
                 .y(function(d) {return d[1]})
+				.width(500)
+				.height(300)
 		
 	
 		                  ;
+						  d3.select('#elo svg').datum(data).transition().duration(500).call(chart).style({ 'width': 780, 'height': 300 });
+
 
 		     chart.xAxis 
 		        .tickFormat(function(d) {
