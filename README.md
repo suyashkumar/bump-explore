@@ -6,5 +6,4 @@ You can find a demo running over at [http://bump.suyashkumar.com/](http://bump.s
 **Requirements**
 * Flask (pip install Flask) 
 
-
-
+![](/images/bumpexplore.gif)
