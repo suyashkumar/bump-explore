@@ -41,7 +41,7 @@ bumpapp.config(function($routeProvider) {
 
 });
 
-function mainController($scope, $http, $location){
+bumpapp.controller('mainController',function ($scope, $http, $location){
 	
 	$scope.loc=$location.$$path // Set current loc to current path
 	if ($scope.loc=="/"){
@@ -62,7 +62,7 @@ function mainController($scope, $http, $location){
 			$scope.sel="single"	
 		}
 	}	
-}
+});
 
 /**
  * Controller for the single comparison poriton of the app at /single
@@ -74,7 +74,7 @@ bumpapp.controller('singleController',['$scope',function($scope){
  * Controller for the pairwise comparison view of the app at /
  */
 
-function pairwiseController($scope, $http){
+bumpapp.controller('pairwiseController',function ($scope, $http){
 	$scope.pageClass='page-home';
 
 	/*
@@ -303,5 +303,5 @@ function pairwiseController($scope, $http){
 
 	}
 
-}
+});
 
