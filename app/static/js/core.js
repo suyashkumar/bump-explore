@@ -40,6 +40,7 @@ bumpapp.config(function($routeProvider) {
         });
 
 });
+
 function mainController($scope, $http, $location){
 	
 	$scope.loc=$location.$$path // Set current loc to current path
@@ -49,40 +50,32 @@ function mainController($scope, $http, $location){
 	else{
 		$scope.sel="single"
 	}
+
 	/*
-	 * Update active tab class
+	 * Update active tab info  
 	 */
 	$scope.select=function(i){
-		if (i==1){
-		
-			$scope.sel="pair"
-			
+		if (i==1){	
+			$scope.sel="pair"	
 		}
 		else{
-			$scope.sel="single"
-			
+			$scope.sel="single"	
 		}
-
-	}
-
-	
+	}	
 }
 
-
+/**
+ * Controller for the single comparison poriton of the app at /single
+ */ 
 bumpapp.controller('singleController',['$scope',function($scope){
-	$scope.ctl="singleController"
-	$scope.single="active"
 	$scope.pageClass='page-about';
-	
-	console.log("This is a test");
 	}]);
+/**
+ * Controller for the pairwise comparison view of the app at /
+ */
+
 function pairwiseController($scope, $http){
-	console.log("Main");
-		
-	
 	$scope.pageClass='page-home';
-	$scope.single='';
-	$scope.pair='active';
 
 	/*
 	Gets list of bumper pool players from server, passes the JSON
