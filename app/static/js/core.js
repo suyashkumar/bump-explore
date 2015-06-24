@@ -6,11 +6,84 @@ Angular front-end application core and controller. Communicates with server
 to get and process relevant data, then populates data in front-end
 view as required. Acts upon frontend interactions as necessary. 
 */
-var bumpapp=angular.module('bumpapp',[]);
+var bumpapp=angular.module('bumpapp',['ngRoute','ngAnimate']);
+
+/*
+ * After the page loads, wait 1000ms and assign
+ * page-inited to the value of the main ng-view in
+ * index.html. This enables route-change based animations
+ * on that ng-view. But animations only happen after intial page load. 
+ */
+bumpapp.run(function($rootScope, $timeout) {
+  $timeout(function() { 
+	$rootScope.pageInited="page-inited"
+  }, 1000)
+});
+
+// ROUTING ===============================================
+// set our routing for this application
+// each route will pull in a different controller
+bumpapp.config(function($routeProvider) {
+
+    $routeProvider
+
+        // home page
+        .when('/', {
+            templateUrl: 'static/pairwise.html',
+            controller: 'pairwiseController'
+        })
+
+        // about page
+        .when('/single', {
+            templateUrl: 'static/single.html',
+            controller: 'singleController'
+        });
+
+});
+function mainController($scope, $http, $location){
+	
+	$scope.loc=$location.$$path // Set current loc to current path
+	if ($scope.loc=="/"){
+		$scope.sel="pair";
+	}
+	else{
+		$scope.sel="single"
+	}
+	/*
+	 * Update active tab class
+	 */
+	$scope.select=function(i){
+		if (i==1){
+		
+			$scope.sel="pair"
+			
+		}
+		else{
+			$scope.sel="single"
+			
+		}
+
+	}
+
+	
+}
 
 
+bumpapp.controller('singleController',['$scope',function($scope){
+	$scope.ctl="singleController"
+	$scope.single="active"
+	$scope.pageClass='page-about';
+	
+	console.log("This is a test");
+	}]);
+function pairwiseController($scope, $http){
+	console.log("Main");
+		
+	
+	$scope.pageClass='page-home';
+	$scope.single='';
+	$scope.pair='active';
 
-function mainController($scope, $http){
 	/*
 	Gets list of bumper pool players from server, passes the JSON
 	data to the bumpers variable to populate drop-down selection lists. 
