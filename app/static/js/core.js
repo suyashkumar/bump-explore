@@ -44,8 +44,10 @@ bumpapp.config(function($routeProvider) {
 bumpapp.controller('mainController',function ($scope, $http, $location){
 	
 	$scope.loc=$location.$$path // Set current loc to current path
+
 	if ($scope.loc=="/"){
 		$scope.sel="pair";
+
 	}
 	else{
 		$scope.sel="single"
