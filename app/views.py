@@ -44,8 +44,7 @@ def compare(p1,p2):
 	print returnDict
 	# Add Elo data to return dict
 	try:
-		playerElos=elo_util.calculateElo(os.path.join(APP_ROOT,'static/master.csv'))
-				
+		playerElos=elo_util.calculateElo(os.path.join(APP_ROOT,'static/master.csv'))	
 		returnDict['p1EloHistory']=elo_util.getFullEloHistory(playerElos,p1.strip())
 		returnDict['p2EloHistory']=elo_util.getFullEloHistory(playerElos,p2.strip())
 	except KeyError:
