@@ -27,13 +27,13 @@ bumpapp.config(function($routeProvider) {
 
     $routeProvider
 
-        // home page
+        // pairwise page
         .when('/', {
             templateUrl: 'static/pairwise.html',
             controller: 'pairwiseController'
         })
 
-        // about page
+        // single comparison page
         .when('/single', {
             templateUrl: 'static/single.html',
             controller: 'singleController'
@@ -41,16 +41,17 @@ bumpapp.config(function($routeProvider) {
 
 });
 
+// Controllers for the application: 
 bumpapp.controller('mainController',function ($scope, $http, $location){
 	
 	$scope.loc=$location.$$path // Set current loc to current path
-
-	if ($scope.loc=="/"){
-		$scope.sel="pair";
-
+	console.log($scope.loc)
+	if ($scope.loc=="/single"){
+		$scope.sel="single"; 
+		console.log("caught")
 	}
 	else{
-		$scope.sel="single"
+		$scope.sel="pair";
 	}
 
 	/*
