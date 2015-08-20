@@ -93,15 +93,16 @@ bumpapp.controller('singleController',function($scope,$http){
 				console.log(data);
 				$scope.singlePlayerData=data;
 				var numGames=data['pData']['games'].length;
-				$scope.dataReformat1=[];
+				dataReformat=[];
 				for(i=0;i<numGames;i++){
 					// Store win and date in "both" array. Easier for front end vis.
 					// Each element is an array represents one game. The first element is 
 					// date, second is win status. 
-					$scope.dataReformat1[i]=[data['pData']['dates'][i], data['pData']['opponent'][i], data['pData']['games'][i]]; 
+					dataReformat[i]=[data['pData']['dates'][i], data['pData']['opponent'][i], data['pData']['games'][i]]; 
 
 				}
-
+				dataReformat.reverse();
+				$scope.dataReformat=dataReformat;
 			});
 	}
 	/*

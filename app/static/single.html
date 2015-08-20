@@ -31,7 +31,7 @@
 				<div style="height:400px;overflow:auto"> 
 					<table class="record-table table table-hover table-bordered">
 	
-						<tr ng-repeat="item in dataReformat1 track by $index" ng-class="{success: item[2]==1}">
+						<tr ng-repeat="item in dataReformat track by $index" ng-class="{success: item[2]==1}">
 		    					<td ng-repeat="actual in item track by $index">{{actual}}</td>
 		  				</tr>
 					</table>
