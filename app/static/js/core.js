@@ -20,6 +20,8 @@ bumpapp.run(function($rootScope, $timeout) {
   }, 1000)
 });
 
+
+                    
 // ROUTING ===============================================
 // set our routing for this application
 // each route will pull in a different controller
@@ -42,20 +44,20 @@ bumpapp.config(function($routeProvider) {
 });
 
 // Controllers for the application: 
+// Main controller
+
 bumpapp.controller('mainController',function ($scope, $http, $location){
 	
 	$scope.loc=$location.$$path // Set current loc to current path
 	console.log($scope.loc)
 	if ($scope.loc=="/single"){
 		$scope.sel="single"; 
-		console.log("caught")
 	}
 	else{
 		$scope.sel="pair";
-	}
-
+	} 
 	/*
-	 * Update active tab info  
+	 * Update active tab  
 	 */
 	$scope.select=function(i){
 		if (i==1){	
@@ -70,16 +72,57 @@ bumpapp.controller('mainController',function ($scope, $http, $location){
 /**
  * Controller for the single comparison poriton of the app at /single
  */ 
-bumpapp.controller('singleController',['$scope',function($scope){
+bumpapp.controller('singleController',function($scope,$http){
 	$scope.pageClass='page-about';
-	}]);
+	var getBumpers=function(){
+		$http.get('/api/bumpers').success(
+			function(data){ //data is json data response
+			$scope.bumpers=data;
+			console.log(data);
+
+
+		});}
+	getBumpers();
+
+	/*
+	 * Gets information on currently selected player and populates view
+	 */
+	$scope.getSingleInfo=function(){
+		$http.get('/api/single/'+$scope.singlePlayer).success(
+			function(data){
+				console.log(data);
+				$scope.singlePlayerData=data;
+				var numGames=data['pData']['games'].length;
+				$scope.dataReformat1=[];
+				for(i=0;i<numGames;i++){
+					// Store win and date in "both" array. Easier for front end vis.
+					// Each element is an array represents one game. The first element is 
+					// date, second is win status. 
+					$scope.dataReformat1[i]=[data['pData']['dates'][i], data['pData']['opponent'][i], data['pData']['games'][i]]; 
+
+				}
+
+			});
+	}
+	/*
+	 * Perfoms a sample comparison of the input player
+	 */
+	$scope.getSampleComparison=function(player){
+		$scope.singlePlayer=player;
+		$scope.getSingleInfo();
+	}
+
+
+
+	
+
+	});
 /**
  * Controller for the pairwise comparison view of the app at /
  */
 
 bumpapp.controller('pairwiseController',function ($scope, $http){
-	$scope.pageClass='page-home';
-
+	$scope.pageClass='page-home'; 
 	/*
 	Gets list of bumper pool players from server, passes the JSON
 	data to the bumpers variable to populate drop-down selection lists. 
@@ -93,7 +136,6 @@ bumpapp.controller('pairwiseController',function ($scope, $http){
 		});
 
 	}
-
 	getBumpers(); // Update Bumper Lists in drop downs
 	// Set win/loss placeholders
 	$scope.playerWins="-"; 

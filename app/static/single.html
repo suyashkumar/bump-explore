@@ -1,11 +1,43 @@
-
+	
 		<div class="container">
 		<div class="well text-center" id="header">
 			<h2>Bump Explore: Single</h2>
 		</div>
 		<div class="alert alert-info alert-dismissible" role="alert" id="beta">
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<strong>Coming Soon!</strong>  
+			<strong>Still in Alpha (and in progress).</strong> Try a sample search: <a href="/#/single" ng-click="getSampleComparison('Tyler')">Tyler</a>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-4 text-center"></div>
+			<div class="col-sm-4 text-center"><select ng-model="singlePlayer" ng-options="bumper as bumper for bumper in bumpers"></select> <button type="submit" class="btn-success btn btn-lg" ng-click="getSingleInfo()" style="margin-left:20px;">Go</button></div>
+			<div class="col-sm-4 text-center"></div>		
+		</div>
+		<div class="row">
+	<!--Table-->
+		<div class="row">
+			
+			<div class="col-sm-3 text-center">
+				Pairwise ledger:
+				<!--Sticky Header -->
+				<table class="record-table table table-hover table-bordered" style="margin-bottom:-0px;padding:0px;"> 
+						<tr>
+							<td><b>Date</b></td>
+							<td><b>Opponent</b></td>
+							<td><b>Win</b></td>
+						</tr>	
+				</table>
+				<!--Scrollable Table Elements-->
+				<div style="height:400px;overflow:auto"> 
+					<table class="record-table table table-hover table-bordered">
+	
+						<tr ng-repeat="item in dataReformat1 track by $index" ng-class="{success: item[2]==1}">
+		    					<td ng-repeat="actual in item track by $index">{{actual}}</td>
+		  				</tr>
+					</table>
+				</div>
+				
+			</div>
 
 		</div>
 			<div class="text-center">(c) 2015 Suyash Kumar</div>

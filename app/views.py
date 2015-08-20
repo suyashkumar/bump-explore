@@ -6,6 +6,8 @@ from bump_util.parsing import parse
 from bump_util.elo import elo_util 
 from bump_util import bump_util 
 import os
+
+
 '''
 Serve up the index page
 '''
@@ -37,7 +39,7 @@ def bumpers():
 
 @app.route('/api/compare/<p1>/<p2>',methods=['GET'])
 def compare(p1,p2):
-	APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+        APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 	
 	playerData=parse.parse(os.path.join(APP_ROOT,'static/master.csv'))
 	returnDict=bump_util.playerCompare(p1.strip(),p2.strip(),playerData)
@@ -52,8 +54,17 @@ def compare(p1,p2):
 		returnDict['p1EloHistory']=[]
 		returnDict['p2EloHistory']=[]
 
-			
 	return Response(json.dumps(returnDict),  mimetype='application/json')
+@app.route('/api/single/<p>', methods=['GET'])
+def single(p):
+    """
+    Get and return single player view information
+    """
+    print "Single Player Request: "+p
+    APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+    playerData=parse.parse(os.path.join(APP_ROOT,'static/master.csv'))  
+    singleDict=bump_util.singleInfo(p,playerData,(os.path.join(APP_ROOT,'static/master.csv')))
+    return Response(json.dumps(singleDict), mimetype='application/json')
 
 
 
